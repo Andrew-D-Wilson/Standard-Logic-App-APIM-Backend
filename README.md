@@ -15,17 +15,17 @@ The overall design aims to abstract the backend from the api operations, i.e. th
 
 I have opted for Infrastructure as Code (IaC) as my method of implementation, specifically Bicep. I have broken down the implementation of the diagram above into two parts, Application Deployment, and API Deployment.
 
-### Application Architecture and Steps (Without Swagger Generation)
+### Application Architecture and Steps (Bicep Only)
 ![Application-Overview](https://andrewilson.co.uk/images/posts/2024/01/Application-Deployment.png)
 
-### API Architecture and Steps (Without Swagger Definition)
+### API Architecture and Steps (Bicep Only)
 ![API-Overivew](https://andrewilson.co.uk/images/posts/2024/01/API-Deployment.png)
 
 ### Application Architecture and Steps (With Swagger Generation)
-![Application-Overview](https://andrewilson.co.uk/images/posts/2024/01/Application-Deployment.png)
+![Application-Overview](https://andrewilson.co.uk/images/posts/2024/01/Application-Deployment-Swagger.png)
 
 ### API Architecture and Steps (With Swagger Definition)
-![API-Overivew](https://andrewilson.co.uk/images/posts/2024/01/API-Deployment.png)
+![API-Overivew](https://andrewilson.co.uk/images/posts/2024/01/API-Deployment-with-Swagger.png)
 
 ## Getting started
 
