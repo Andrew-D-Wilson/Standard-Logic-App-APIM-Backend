@@ -32,6 +32,8 @@
 	.PARAMETER InteractiveMode
 	If specified will request the user to interactively login into Azure for az tooling.
 
+	.NOTES 
+	Author: Andrew Wilson
     #>
 [CmdletBinding()]
 param(
