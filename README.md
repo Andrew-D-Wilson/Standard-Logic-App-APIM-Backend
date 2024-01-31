@@ -1,4 +1,4 @@
-# Logic App (Standard) APIM Backend Swagger
+# Logic App (Standard) APIM Backend
 
 ## Getting started
 
