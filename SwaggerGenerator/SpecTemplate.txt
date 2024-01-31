@@ -1,0 +1,23 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "definitions": {
+    __SchemaDefinitions__
+  },
+  "info": {
+    "description": "__APIDescription__",
+    "title": "__APITitle__",
+    "version": "__APIVersion__"
+  },
+  "paths": {
+    __paths__
+  },
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0"
+}

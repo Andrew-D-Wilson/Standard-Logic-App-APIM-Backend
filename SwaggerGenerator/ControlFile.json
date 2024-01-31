@@ -1,0 +1,12 @@
+[
+	{
+		"OperationName": "Workflow1Op",
+		"WorkflowDefinitionName": "Workflow1",
+		"HTTPTriggerName": "When_a_HTTP_request_is_received"
+	},
+	{
+		"OperationName": "Workflow2Op",
+		"WorkflowDefinitionName": "Workflow2",
+		"HTTPTriggerName": "When_a_HTTP_request_is_received"
+	}
+]
