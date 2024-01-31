@@ -15,7 +15,7 @@
 
 
 ## License
-The Standard Logic App APIM Backend Swagger is made available under the terms and conditions of the [MIT license](LICENSE).
+The Standard Logic App APIM Backend is made available under the terms and conditions of the [MIT license](LICENSE).
 
 [badge_blog]: https://img.shields.io/badge/blog-andrewilson.co.uk-blue?style=for-the-badge
 [link_blog]: https://andrewilson.co.uk/
