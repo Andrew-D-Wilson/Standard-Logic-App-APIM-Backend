@@ -18,6 +18,7 @@ I have specified two approaches with the same overall aim but with varying degre
 1. Configuration through Bicep ONLY.
    - See Blog Post for more details: [Azure API Management | Logic App (Standard) Backend](https://andrewilson.co.uk/post/2024/01/standard-logic-app-apim-backend/)
 2. Configuration through Swagger Generation and Bicep.
+   - See Blog Post for more details: [Azure API Management | Logic App (Standard) Backend Using a Swagger Definition](https://andrewilson.co.uk/post/2024/02/standard-logic-app-apim-backend-swagger/)
 
 The high level architecture diagram is shown below:
 
