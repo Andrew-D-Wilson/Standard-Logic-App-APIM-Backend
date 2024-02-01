@@ -23,7 +23,7 @@ The high level architecture diagram is shown below:
 
 ![Architecture-Overview](https://andrewilson.co.uk/images/posts/2024/01/Overview.png)
 
-The overall design aims to abstract the backend from the api operations, i.e. the backend points to the Logic App and the individual operations point to the respective workflows. The design also specifies granular access to the workflow Shared-Access-Signature (sig) held in the applications specific KeyVault (to see further details on this, see Azure RBAC Key Vault | Role Assignment for Specific Secret). Furthermore, the additional required parameters that are necessary to call a workflow have been implemented through APIM policies to remove the need for callers to understand backend implementation.
+The overall design aims to abstract the backend from the api operations, i.e. the backend points to the Logic App and the individual operations point to the respective workflows. The design also specifies granular access to the workflow Shared-Access-Signature (sig) held in the applications specific KeyVault (*to see further details on this, see [Azure RBAC Key Vault | Role Assignment for Specific Secret](https://andrewilson.co.uk/post/2023/11/rbac-key-vault-specific-secret/)*). Furthermore, the additional required parameters that are necessary to call a workflow have been implemented through APIM policies to remove the need for callers to understand backend implementation.
 
 I have opted for Infrastructure as Code (IaC) as my method of implementation, specifically Bicep. I have broken down the implementation of the diagram above into two parts, Application Deployment, and API Deployment.
 
