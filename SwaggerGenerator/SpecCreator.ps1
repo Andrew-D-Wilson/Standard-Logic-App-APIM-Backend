@@ -244,7 +244,7 @@ foreach ($workflow in $controlData) {
 	}
 
 	if (![string]::IsNullOrEmpty($relativePath)) {
-		$pathParameters = $relativePath.Replace('/', '').Replace('{', '').Split('}')
+		$pathParameters = Select-String '({[A-Za-z0-9]+})' -input $relativePath -AllMatches | ForEach-Object { $_.matches } | ForEach-Object { $_.groups[1].value.Replace('{','').Replace('}','')}
 		Write-Debug ('pathParameters: {0}' -f $pathParameters)
 
 		foreach ($parameter in $pathParameters) {
