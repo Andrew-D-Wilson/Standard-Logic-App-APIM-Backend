@@ -1,4 +1,4 @@
-using './logicAppStandardApimAPI.azuredeploy.bicep'
+using './logicAppStandardApimAPIWithSwagger.azuredeploy.bicep'
 
 param logicAppName = 'ap1devlogic'
 param apimInstanceName = 'apidevapim'
