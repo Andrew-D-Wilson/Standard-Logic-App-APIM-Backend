@@ -82,7 +82,7 @@ jobs:
          failOnStdErr: false
 
       # Deploy APIM Instance Bicep file
-     - name: deployLgsSecrets
+     - name: deployAPIMINstance
        id: apimInstancedeploy
        uses: azure/arm-deploy@v1
        with:
@@ -90,7 +90,7 @@ jobs:
          resourceGroupName: ${{ secrets.AZURE_RG }}
          template: ./Bicep/API/apimInstance.azuredeploy.bicep
          parameters: >
-           apiPrefixName=awmyapi
+           apiPrefixName=awapi
            apimPublisherEmail=${{ secrets.EMAIL }}
            apimPublisherName=AndrewWilson
          failOnStdErr: false
