@@ -42,7 +42,9 @@ jobs:
          template: ./Bicep/Application/application.azuredeploy.bicep
          parameters: 'applicationPrefixName=awap1 applicationName=Application1'
          failOnStdErr: false
-        
+
+     - run: echo ${{ steps.deploy.outputs.applicationLogicAppName }}
+     
      - name: Get publish Profile
        id: laapp
        uses: azure/powershell@v1
