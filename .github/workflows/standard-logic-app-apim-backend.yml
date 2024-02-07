@@ -19,7 +19,7 @@ jobs:
           name: build-artifact
           path: ${{ github.run_id }}.zip
             
-  DeployLogicAppStandard:
+  Deploy:
     name: Deploy
     runs-on: ubuntu-latest
     needs: [BuildLogicAppStandard] 
@@ -33,7 +33,7 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-      # Deploy Bicep file
+      # Deploy Logic App Standard Bicep file
      - name: deploy
        id: ladeploy
        uses: azure/arm-deploy@v1
@@ -66,3 +66,14 @@ jobs:
         app-name: ${{ steps.ladeploy.outputs.applicationLogicAppName }}
         package: build-art/${{ github.run_id }}.zip
         publish-profile: ${{steps.laapp.outputs.profile}}
+
+      # Deploy Logic App Standard Secrets Bicep file
+     - name: deployLgsSecrets
+       id: laKeyVayltSecretsdeploy
+       uses: azure/arm-deploy@v1
+       with:
+         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+         resourceGroupName: ${{ secrets.AZURE_RG }}
+         template: ./Bicep/Application/applicationSecrets.azuredeploy.bicep
+         parameters: 'applicationLogicAppName=${{ steps.ladeploy.outputs.applicationLogicAppName }} keyVaultName=${{ steps.ladeploy.outputs.keyVaultName }} workflows=[{"workflowName": "Workflow1","workflowTrigger": "When_a_HTTP_request_is_received"},{"workflowName": "Workflow2","workflowTrigger": "When_a_HTTP_request_is_received"}]'
+         failOnStdErr: false
