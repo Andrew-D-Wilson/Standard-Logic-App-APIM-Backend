@@ -5,11 +5,17 @@ Bicep Template: Application Deploy
 
 targetScope = 'resourceGroup'
 
+// ** User Defined Types **
+// ************************
+
+@maxLength(5)
+type prefix = string
+
 // ** Parameters **
 // ****************
 
 @description('A prefix used to identify the application resources')
-param applicationPrefixName string
+param applicationPrefixName prefix
 
 @description('The name of the application used for tags')
 param applicationName string
