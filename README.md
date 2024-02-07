@@ -50,21 +50,21 @@ In both cases you will need to deploy the Application first and then the API.
    1. Deploy the Application Services into Azure
       1. Update the [Application Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam).
-      3. Deploy the Application Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the Application Template to Azure.
    2. Deploy the demo [Standard Logic App](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/tree/main/Application) to the Standard Logic App you deployed into Azure in step 1.
    3. Deploy Application Secrets to KeyVault
       1.  Update the [Application Secrets Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/applicationSecrets.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/applicationSecrets.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/applicationSecrets.azuredeploy.bicepparam).
-      3. Deploy the Application Secrets Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the Application Secrets Template to Azure.
 2. APIM and API Deployment
    1. Deploy an APIM Instance into Azure
       1. Update the [APIM Instance Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicepparam).
-      3. Deploy the APIM Instance Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the APIM Instance Template to Azure.
    2. Deploy the APIM API with the recently deployed Logic App as the Backend.
       1. Update the [Logic App APIM API Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPI.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPI.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPI.azuredeploy.bicepparam).
-      3. Deploy the Logic App APIM API Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the Logic App APIM API Template to Azure.
 
 You will now be in a position to call your APIM API which will be using the Standard Logic App as its backend.
 
@@ -76,12 +76,12 @@ As a prerequisite to running the swagger generator, you will need to have instal
    1. Deploy the Application Services into Azure
       1. Update the [Application Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam).
-      3. Deploy the Application Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the Application Template to Azure.
    2. Deploy the demo [Standard Logic App](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/tree/main/Application) to the Standard Logic App you deployed into Azure in step 1.
    3. Deploy Application Secrets to KeyVault
       1.  Update the [Application Secrets Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/applicationSecrets.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/applicationSecrets.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/applicationSecrets.azuredeploy.bicepparam).
-      3. Deploy the Application Secrets Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the Application Secrets Template to Azure.
    4. Generate Swagger Definition
       1. Update the [ControlFile](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/SwaggerGenerator/ControlFile.json) to represent the Logic App and its workflows that you have deployed into Azure.
       2. Run the [SpecCreator.ps1](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/SwaggerGenerator/SpecCreator.ps1) script providing the respective parameters. Use the interactive parameter switch to conduct an interactive login with the az tooling.
@@ -90,12 +90,12 @@ As a prerequisite to running the swagger generator, you will need to have instal
    1. Deploy an APIM Instance into Azure
       1. Update the [APIM Instance Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicepparam)
       2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicepparam).
-      3. Deploy the APIM Instance Template to Azure. You can do this through the Portal using the custom deployment template.
+      3. Deploy the APIM Instance Template to Azure.
    2. Deploy the APIM API with the recently deployed Logic App as the Backend (Using the created Swagger Definition).
       1. Update the [Logic App APIM API with Swagger Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicepparam)
       2. **If** you moved the generated swagger file, you will need to update the [Bicep Template (line 56)](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/d968591f6716341e6302ae91e518ed0dc594ff63/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicep#L56) to point to the new location.
       3. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicepparam).
-      4. Deploy the Logic App APIM API Template to Azure. You can do this through the Portal using the custom deployment template.
+      4. Deploy the Logic App APIM API Template to Azure.
 
 You will now be in a position to call your APIM API which will be using the Standard Logic App as its backend.
 
