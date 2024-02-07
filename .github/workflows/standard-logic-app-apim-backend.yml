@@ -3,25 +3,67 @@ name: standard-logic-app-apim-backend
 on:
   workflow_dispatch:
 jobs:
-  build-and-deploy:
+  BuildLogicAppStandard:
     runs-on: ubuntu-latest
     steps:
-
       # Checkout code
-    - uses: actions/checkout@main
+      - uses: actions/checkout@main
+      
+      - name: Easy Zip Files
+        uses: vimtor/action-zip@v1
+        with:
+          dest: ${{ github.run_id }}.zip
+          files: ./Application/
+      - uses: actions/upload-artifact@master
+        with:
+          name: build-artifact
+          path: ${{ github.run_id }}.zip
+            
+  DeployLogicAppStandard:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [BuildLogicAppStandard] 
+    steps:
+    
+       # Checkout code
+     - uses: actions/checkout@main
 
-      # Log into Azure
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+     - uses: azure/login@v1
+       with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
 
       # Deploy Bicep file
-    - name: deploy
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./Bicep/Application/application.azuredeploy.bicep
-        parameters: 'applicationPrefixName=awap1 applicationName=Application1'
-        failOnStdErr: false
-    
+     - name: deploy
+       uses: azure/arm-deploy@v1
+       with:
+         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+         resourceGroupName: ${{ secrets.AZURE_RG }}
+         template: ./Bicep/Application/application.azuredeploy.bicep
+         parameters: 'applicationPrefixName=awap1 applicationName=Application1'
+         failOnStdErr: false
+        
+     - name: Get publish Profile
+       id: laapp
+       uses: azure/powershell@v1
+       with:
+         inlineScript: |
+          $profile = Get-AzWebAppPublishingProfile `
+              -ResourceGroupName ${{ secrets.AZURE_RG }}`
+              -Name ${{ steps.deploy.outputs.applicationLogicAppName }}
+          $profile = $profile.Replace("`r", "").Replace("`n", "")
+          Write-Output "::set-output name=profile::$profile"
+         azPSVersion: latest
+
+     - uses: actions/download-artifact@master
+       with:
+        name: build-artifact
+        path: build-art/
+
+     - name: Deploy to Azure Logic App
+       uses: Azure/functions-action@v1
+       id: la
+       with:
+        app-name: ${{ steps.deploy.outputs.applicationLogicAppName }}
+        package: build-art/${{ github.run_id }}.zip
+        publish-profile: ${{steps.laapp.outputs.profile}}
