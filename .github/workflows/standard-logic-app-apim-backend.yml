@@ -75,5 +75,8 @@ jobs:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
          resourceGroupName: ${{ secrets.AZURE_RG }}
          template: ./Bicep/Application/applicationSecrets.azuredeploy.bicep
-         parameters: 'applicationLogicAppName=${{ steps.ladeploy.outputs.applicationLogicAppName }} keyVaultName=${{ steps.ladeploy.outputs.keyVaultName }} workflows=[{""workflowName"": ""Workflow1"",""workflowTrigger"": ""When_a_HTTP_request_is_received""},{""workflowName"": ""Workflow2"",""workflowTrigger"": ""When_a_HTTP_request_is_received""}]'
+         parameters: >
+           applicationLogicAppName=${{ steps.ladeploy.outputs.applicationLogicAppName }} 
+           keyVaultName=${{ steps.ladeploy.outputs.keyVaultName }} 
+           workflows='[{"workflowName": "Workflow1","workflowTrigger": "When_a_HTTP_request_is_received"},{"workflowName": "Workflow2","workflowTrigger": "When_a_HTTP_request_is_received"}]'
          failOnStdErr: false
