@@ -107,8 +107,8 @@ jobs:
            logicAppName=${{ steps.ladeploy.outputs.applicationLogicAppName }}
            apimInstanceName=${{ steps.apimInstancedeploy.outputs.apimInstanceName }}
            keyVaultName=${{ steps.ladeploy.outputs.keyVaultName }}
-           apiName='lgsAPI'
-           apimAPIPath='/appapi'
-           apimAPIDisplayName='ApplicationAPI'
+           apiName=lgsAPI
+           apimAPIPath=/appapi
+           apimAPIDisplayName=ApplicationAPI
            apimAPIOperations="[{\"name\":\"w1\",\"displayName\":\"Workflow1\",\"method\":\"GET\",\"lgWorkflowName\":\"Workflow1\",\"lgWorkflowTrigger\":\"When_a_HTTP_request_is_received\"},{\"name\":\"w2\",\"displayName\":\"Workflow2\",\"method\":\"GET\",\"lgWorkflowName\":\"Workflow2\",\"lgWorkflowTrigger\":\"When_a_HTTP_request_is_received\"}]"
          failOnStdErr: false
