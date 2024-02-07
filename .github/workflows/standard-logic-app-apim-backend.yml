@@ -43,17 +43,13 @@ jobs:
          template: ./Bicep/Application/application.azuredeploy.bicep
          parameters: 'applicationPrefixName=awap1 applicationName=Application1'
          failOnStdErr: false
-
-     - run: echo ${{ steps.ladeploy.outputs.applicationLogicAppName }}
      
      - name: Get publish Profile
        id: laapp
        uses: azure/powershell@v1
        with:
          inlineScript: |
-          $profile = Get-AzWebAppPublishingProfile `
-              -ResourceGroupName ${{ secrets.AZURE_RG }}`
-              -Name ${{ steps.ladeploy.outputs.applicationLogicAppName }}
+          $profile = Get-AzWebAppPublishingProfile -ResourceGroupName ${{ secrets.AZURE_RG }} -Name ${{ steps.ladeploy.outputs.applicationLogicAppName }}
           $profile = $profile.Replace("`r", "").Replace("`n", "")
           Write-Output "::set-output name=profile::$profile"
          azPSVersion: latest
