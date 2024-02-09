@@ -117,5 +117,5 @@ jobs:
            apiName=lgsAPISwag
            apimAPIPath=/appapiswg
            apimAPIDisplayName=ApplicationAPISwag
-           apimAPIOperations="[{\"name\":\"w1\",\"lgWorkflowName\":\"Workflow1\",\"lgWorkflowTrigger\":\"When_a_HTTP_request_is_received\"},{\"name\":\"w2\",\"lgWorkflowName\":\"Workflow2\",\"lgWorkflowTrigger\":\"When_a_HTTP_request_is_received\"}]"
+           apimAPIOperations="[{\"name\":\"Workflow1Op\",\"lgWorkflowName\":\"Workflow1\",\"lgWorkflowTrigger\":\"When_a_HTTP_request_is_received\"},{\"name\":\"Workflow2Op\",\"lgWorkflowName\":\"Workflow2\",\"lgWorkflowTrigger\":\"When_a_HTTP_request_is_received\"}]"
          failOnStdErr: false
