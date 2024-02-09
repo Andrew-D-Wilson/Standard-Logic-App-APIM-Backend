@@ -85,7 +85,7 @@ jobs:
        id: swaggergen
        uses: azure/powershell@v1
        with:
-         inlineScript: ./SwaggerGenerator/SpecCreator.ps1 -SubscriptionId ${{ secrets.AZURE_SUBSCRIPTION }} -ResourceGroupName ${{ secrets.AZURE_RG }} -LogicAppName ${{ steps.ladeploy.outputs.applicationLogicAppName }} -$APITitle SwagApp1 -APIDescription apifromswagdef
+         inlineScript: ./SwaggerGenerator/SpecCreator.ps1 -SubscriptionId ${{ secrets.AZURE_SUBSCRIPTION }} -ResourceGroupName ${{ secrets.AZURE_RG }} -LogicAppName ${{ steps.ladeploy.outputs.applicationLogicAppName }} -APITitle SwagApp1 -APIDescription apifromswagdef
          azPSVersion: latest
 
       # Deploy APIM Instance Bicep file
