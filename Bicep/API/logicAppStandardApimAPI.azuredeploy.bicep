@@ -5,6 +5,30 @@ Bicep Template: Logic App Standard APIM API
 
 targetScope = 'resourceGroup'
 
+// ** User Defined Types **
+// ************************
+
+@description('Configuration properties for setting up a LG App stnd APIM API Operation')
+@metadata({
+  name: 'Name of the API Operation'
+  displayName: 'User friendly name of the API Operation'
+  method: 'The API Operations HTTP method'
+  lgWorkflowName: 'Name of the Standard Logic App Workflow to use for the Operation Backend'
+  lgWorkflowTrigger: 'Name of the Workflow HTTP Trigger'
+})
+@sealed()
+type apimAPIOperation = {
+  name: string
+  displayName: string
+  method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE'
+  lgWorkflowName: string
+  lgWorkflowTrigger: string
+}
+
+@description('One or more APIM API Operations to configure')
+@minLength(1)
+type apimAPIOperationArray = apimAPIOperation[]
+
 // ** Parameters **
 // ****************
 
@@ -27,15 +51,7 @@ param apimAPIPath string
 param apimAPIDisplayName string
 
 @description('Array of API operations')
-param apimAPIOperations array = [
-  {
-    name: ''
-    displayName: ''
-    method: ''
-    lgWorkflowName: ''
-    lgWorkflowTrigger: ''
-  }
-]
+param apimAPIOperations apimAPIOperationArray
 
 // ** Variables **
 // ***************
@@ -81,7 +97,7 @@ resource logicApp 'Microsoft.Web/sites@2022-09-01' existing = {
 }
 
 @description('Deploy logic App API operation')
-module logicAppAPIOperation 'Modules/apimOperation.azuredeploy.bicep' = [for operation in apimAPIOperations :{
+module logicAppAPIOperation 'Modules/apimOperation.azuredeploy.bicep' = [for operation in apimAPIOperations: {
   name: '${operation.name}-deploy'
   params: {
     parentName: '${apimInstance.name}/${logicAppAPI.name}'

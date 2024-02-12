@@ -5,6 +5,24 @@ Bicep Template: Application Secrets Deploy
 
 targetScope = 'resourceGroup'
 
+// ** User Defined Types **
+// ************************
+
+@description('Object type used to identify a Workflow and Trigger')
+@metadata({
+  workflowName: 'The name of the workflow within your Standard Logic App.'
+  workflowTrigger: 'The HTTP trigger name within the workflow'
+})
+@sealed()
+type workflow = {
+  workflowName: string
+  workflowTrigger: string
+}
+
+@description('Array of Standard Logic App Workflows')
+@minLength(1)
+type workflowArray = workflow[]
+
 // ** Parameters **
 // ****************
 
@@ -15,17 +33,10 @@ param applicationLogicAppName string
 param keyVaultName string
 
 @description('Array of Workflows to obtain sigs from.')
-param workflows array = [
-  {
-    workflowName: ''
-    workflowTrigger: ''
-  }
-]
+param workflows workflowArray
 
 // ** Variables **
 // ***************
-
-
 
 // ** Resources **
 // ***************
