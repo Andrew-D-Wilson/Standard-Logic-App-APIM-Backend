@@ -11,7 +11,7 @@ param apimAPIOperations = [
     name: 'w1'
     displayName: 'Workflow1'
     method: 'GET'
-    path: '/test1/'
+    path: '/test1/{customerId}'
     lgWorkflowName: 'Workflow1'
     lgWorkflowTrigger: 'When_a_HTTP_request_is_received'
   }

@@ -1,11 +1,13 @@
 [
 	{
 		"OperationName": "Workflow1Op",
+		"Path": "/test1/{customerId}",
 		"WorkflowDefinitionName": "Workflow1",
 		"HTTPTriggerName": "When_a_HTTP_request_is_received"
 	},
 	{
 		"OperationName": "Workflow2Op",
+		"Path": "/test2/",
 		"WorkflowDefinitionName": "Workflow2",
 		"HTTPTriggerName": "When_a_HTTP_request_is_received"
 	}

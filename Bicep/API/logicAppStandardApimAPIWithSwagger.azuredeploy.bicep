@@ -11,12 +11,14 @@ targetScope = 'resourceGroup'
 @description('Configuration properties for setting up a LG App stnd APIM API Operation')
 @metadata({
   name: 'Name of the API Operation'
+  path: 'APIM API Operation path that will be replaced with backend implementation through policy. Relative Paths included and matching Logic App.'
   lgWorkflowName: 'Name of the Standard Logic App Workflow to use for the Operation Backend'
   lgWorkflowTrigger: 'Name of the Workflow HTTP Trigger'
 })
 @sealed()
 type apimAPIOperation = {
   name: string
+  path: string
   lgWorkflowName: string
   lgWorkflowTrigger: string
 }
@@ -177,9 +179,7 @@ module operationPolicy './Modules/apimOperationPolicy.azuredeploy.bicep' = [for 
   params: {
     parentStructureForName: '${apimInstance.name}/${logicAppAPI.name}/${operation.name}'
     rawPolicy: apimOperationPolicyRaw
-    apiVersion: listCallbackUrl(resourceId('Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers', logicAppName, 'runtime', 'workflow', 'management', operation.lgWorkflowName, operation.lgWorkflowTrigger), '2022-09-01').queries['api-version']
-    sp: listCallbackUrl(resourceId('Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers', logicAppName, 'runtime', 'workflow', 'management', operation.lgWorkflowName, operation.lgWorkflowTrigger), '2022-09-01').queries.sp
-    sv: listCallbackUrl(resourceId('Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers', logicAppName, 'runtime', 'workflow', 'management', operation.lgWorkflowName, operation.lgWorkflowTrigger), '2022-09-01').queries.sv
+    lgCallBackObject: listCallbackUrl(resourceId('Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers', logicAppName, 'runtime', 'workflow', 'management', operation.lgWorkflowName, operation.lgWorkflowTrigger), '2022-09-01')
     sig: '{{${apiName}-${operation.name}-sig}}'
   }
 }]
