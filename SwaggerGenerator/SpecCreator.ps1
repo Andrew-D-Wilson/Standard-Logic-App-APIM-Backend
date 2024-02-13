@@ -196,7 +196,6 @@ foreach ($workflow in $controlData) {
 
 	$triggerMethod = 'get'
 	$relativePath = ''
-	$relativePathBase = "/{0}/triggers/{1}/invoke/" -f $workflow.WorkflowDefinitionName, $workflow.HTTPTriggerName
 	$bodyDescription = ''
 	$pathParametersArray = @()
 	try {
@@ -260,15 +259,11 @@ foreach ($workflow in $controlData) {
 				$pathParametersArray += $parameterString
 			}
 		}
-		$relativePath = (Join-Path -Path $relativePathBase -ChildPath $relativePath).Replace('\', '/')
-	}
-	else {
-		$relativePath = $relativePathBase
 	}
 	
 	$parameters = $pathParametersArray -join ","
 
-	$populatedApiPath = $apiPath -f $relativePath, $triggerMethod.ToLower(), $workflow.OperationName, $parameters
+	$populatedApiPath = $apiPath -f $workflow.Path, $triggerMethod.ToLower(), $workflow.OperationName, $parameters
 	$apiPaths += $populatedApiPath
 
 }

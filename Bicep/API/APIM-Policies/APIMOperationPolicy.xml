@@ -2,6 +2,7 @@
 <policies>
     <inbound>
         <base />
+        <rewrite-uri template="__uri__" />
         <set-query-parameter name="api-version" exists-action="append">
             <value>__api-version__</value>
         </set-query-parameter>

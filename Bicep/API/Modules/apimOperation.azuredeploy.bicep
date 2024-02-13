@@ -20,21 +20,21 @@ param operationDisplayName string
 @description('API Operation Method e.g. GET')
 param operationMethod string
 
+@description('API Operation path that will be replaced with backend implementation through policy')
+param operationPath string
+
 @description('Logic App Call Back object containing URL and other details')
 param lgCallBackObject object
 
 // ** Variables **
 // ***************
 
-var operationUrlBase = split(split(lgCallBackObject.value, '?')[0], '/api')[1]
 var hasRelativePath = lgCallBackObject.?relativePath != null ? true : false
 var pathParametersList = hasRelativePath ? lgCallBackObject.relativePathParameters : []
 var pathParameters = [for pathParameter in pathParametersList: {
     name: pathParameter
     type: 'string'
 }]
-var RelativePathHasBeginingSlash = hasRelativePath ? first(lgCallBackObject.relativePath) == '/' : false
-var operationUrl = hasRelativePath && RelativePathHasBeginingSlash ? '${operationUrlBase}${lgCallBackObject.relativePath}' : hasRelativePath && !RelativePathHasBeginingSlash ? '${operationUrlBase}/${lgCallBackObject.relativePath}' : operationUrlBase
 
 // ** Resources **
 // ***************
@@ -45,7 +45,7 @@ resource logicAppAPIGetOperation 'Microsoft.ApiManagement/service/apis/operation
   properties: {
     displayName: operationDisplayName
     method: operationMethod
-    urlTemplate: operationUrl
+    urlTemplate: operationPath
     templateParameters: hasRelativePath ? pathParameters : null
   }
 }

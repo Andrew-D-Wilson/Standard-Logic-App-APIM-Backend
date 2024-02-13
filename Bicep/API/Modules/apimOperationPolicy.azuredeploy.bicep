@@ -14,24 +14,24 @@ param parentStructureForName string
 @description('The raw policy document template')
 param rawPolicy string
 
-@description('The Logic App service API version')
-param apiVersion string
-
-@description('The Logic App workflow permissions')
-param sp string
-
-@description('The Logic App workflow version number of the query parameters')
-param sv string
-
 @description('The named value name for the workflow sig')
 param sig string
+
+@description('Logic App Call Back object containing URL and other details')
+param lgCallBackObject object
 
 // ** Variables **
 // ***************
 
-var policyApiVersion = replace(rawPolicy, '__api-version__', apiVersion)
-var policySP = replace(policyApiVersion, '__sp__', sp)
-var policySV = replace(policySP, '__sv__', sv)
+var operationUrlBase = split(split(lgCallBackObject.value, '?')[0], '/api')[1]
+var hasRelativePath = lgCallBackObject.?relativePath != null ? true : false
+var RelativePathHasBeginingSlash = hasRelativePath ? first(lgCallBackObject.relativePath) == '/' : false
+var operationUrl = hasRelativePath && RelativePathHasBeginingSlash ? '${operationUrlBase}${lgCallBackObject.relativePath}' : hasRelativePath && !RelativePathHasBeginingSlash ? '${operationUrlBase}/${lgCallBackObject.relativePath}' : operationUrlBase
+
+var policyURI = replace(rawPolicy, '__uri__', operationUrl)
+var policyApiVersion = replace(policyURI, '__api-version__', lgCallBackObject.queries['api-version'])
+var policySP = replace(policyApiVersion, '__sp__', lgCallBackObject.queries.sp)
+var policySV = replace(policySP, '__sv__', lgCallBackObject.queries.sv)
 var policySIG = replace(policySV, '__sig__', sig)
 
 
