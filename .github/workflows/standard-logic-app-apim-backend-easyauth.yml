@@ -1,0 +1,7 @@
+name: standard-logic-app-apim-backend-easyauth
+
+on:
+  workflow_dispatch:
+jobs:
+  BuildLogicAppStandard:
+    runs-on: ubuntu-latest
