@@ -15,7 +15,7 @@ param parentStructureForName string
 param rawPolicy string
 
 @description('The named value name for the workflow sig')
-param sig string
+param sig string = ''
 
 @description('Logic App Call Back object containing URL and other details')
 param lgCallBackObject object
@@ -33,7 +33,6 @@ var policyApiVersion = replace(policyURI, '__api-version__', lgCallBackObject.qu
 var policySP = replace(policyApiVersion, '__sp__', lgCallBackObject.queries.sp)
 var policySV = replace(policySP, '__sv__', lgCallBackObject.queries.sv)
 var policySIG = replace(policySV, '__sig__', sig)
-
 
 // ** Resources **
 // ***************
