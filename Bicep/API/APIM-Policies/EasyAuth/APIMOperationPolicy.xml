@@ -1,0 +1,19 @@
+<!-- API OPERATION SCOPE -->
+<policies>
+    <inbound>
+        <base />
+        <rewrite-uri template="__uri__" />
+        <set-query-parameter name="api-version" exists-action="append">
+            <value>__api-version__</value>
+        </set-query-parameter>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

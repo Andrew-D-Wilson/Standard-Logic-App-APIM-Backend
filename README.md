@@ -12,40 +12,22 @@
 [badge_license]: https://img.shields.io/github/license/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend?style=for-the-badge
 [link_repo]: https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend
 
-This repository contains my approach to a configurable and secure method in setting up the front-to-backend routing in APIM for Logic Apps Standard. 
+This repository contains configurable and secure methods in setting up the front-to-backend routing in APIM for Logic Apps Standard. 
 
-I have specified two approaches with the same overall aim but with varying degrees of configurability:
-1. Configuration through Bicep ONLY.
+I have specified three approaches with the same overall aim but with varying degrees of configurability and security:
+1. Using Logic App SAS Sig Key and Configuration through Bicep ONLY.
    - See Blog Post for more details: [Azure API Management | Logic App (Standard) Backend](https://andrewilson.co.uk/post/2024/01/standard-logic-app-apim-backend/)
-2. Configuration through Swagger Generation and Bicep.
+2. Using Logic App SAS Sig Key and Configuration through Swagger Generation and Bicep.
    - See Blog Post for more details: [Azure API Management | Logic App (Standard) Backend Using a Swagger Definition](https://andrewilson.co.uk/post/2024/02/standard-logic-app-apim-backend-swagger/)
-
-The high level architecture diagram is shown below:
-
-![Architecture-Overview](https://andrewilson.co.uk/images/posts/2024/01/Overview.png)
-
-The overall design aims to abstract the backend from the api operations, i.e. the backend points to the Logic App and the individual operations point to the respective workflows. The design also specifies granular access to the workflow Shared-Access-Signature (sig) held in the applications specific KeyVault (*to see further details on this, see [Azure RBAC Key Vault | Role Assignment for Specific Secret](https://andrewilson.co.uk/post/2023/11/rbac-key-vault-specific-secret/)*). Furthermore, the additional required parameters that are necessary to call a workflow have been implemented through APIM policies to remove the need for callers to understand backend implementation.
-
-I have opted for Infrastructure as Code (IaC) as my method of implementation, specifically Bicep. I have broken down the implementation of the diagram above into two parts, Application Deployment, and API Deployment.
-
-## Application Architecture and Steps (Bicep Only)
-![Application-Overview](https://andrewilson.co.uk/images/posts/2024/01/Application-Deployment.png)
-
-## API Architecture and Steps (Bicep Only)
-![API-Overivew](https://andrewilson.co.uk/images/posts/2024/01/API-Deployment.png)
-
-## Application Architecture and Steps (With Swagger Generation)
-![Application-Overview](https://andrewilson.co.uk/images/posts/2024/01/Application-Deployment-Swagger.png)
-
-## API Architecture and Steps (With Swagger Definition)
-![API-Overivew](https://andrewilson.co.uk/images/posts/2024/01/API-Deployment-with-Swagger.png)
+3. Using Logic App Easy Auth and Configuration through Bicep ONLY.
+   - See Blog Post for more details: [Easy Auth | Standard Logic App with Azure API Management](https://andrewilson.co.uk/post/2024/02/standard-logic-app-easy-auth-apim/)
 
 ## Getting started
 Depending on the configuration approach that you would like to take, the steps involved will differ slightly.
 
-In both cases you will need to deploy the Application first and then the API.
+In all cases you will need to deploy the Application first and then the API.
 
-### Getting started: Bicep Only
+### Getting started: SAS Sig Key and Bicep Only Configuration
 1. Application Deployment
    1. Deploy the Application Services into Azure
       1. Update the [Application Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam)
@@ -68,7 +50,7 @@ In both cases you will need to deploy the Application first and then the API.
 
 You will now be in a position to call your APIM API which will be using the Standard Logic App as its backend.
 
-### Getting started: With Swagger Definition
+### Getting started: SAS Sig Key and Swagger Definition
 
 As a prerequisite to running the swagger generator, you will need to have installed the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
 
@@ -96,6 +78,25 @@ As a prerequisite to running the swagger generator, you will need to have instal
       2. **If** you moved the generated swagger file, you will need to update the [Bicep Template (line 56)](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/d968591f6716341e6302ae91e518ed0dc594ff63/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicep#L56) to point to the new location.
       3. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIWithSwagger.azuredeploy.bicepparam).
       4. Deploy the Logic App APIM API Template to Azure.
+
+You will now be in a position to call your APIM API which will be using the Standard Logic App as its backend.
+
+### Getting started: Using Logic App Easy Auth and Configuration through Bicep ONLY.
+1. Application Deployment
+   1. Deploy the Application Services into Azure
+      1. Update the [Application Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam)
+      2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/Application/application.azuredeploy.bicepparam).
+      3. Deploy the Application Template to Azure.
+   2. Deploy the demo [Standard Logic App](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/tree/main/Application) to the Standard Logic App you deployed into Azure in step 1.
+2. APIM and API Deployment
+   1. Deploy an APIM Instance into Azure
+      1. Update the [APIM Instance Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicepparam)
+      2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/apimInstance.azuredeploy.bicepparam).
+      3. Deploy the APIM Instance Template to Azure.
+   2. Deploy the APIM API with the recently deployed Logic App as the Backend.
+      1. Update the [Logic App APIM API Bicep Parameters from their defaults](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIEasyAuth.azuredeploy.bicepparam)
+      2. Build both the [Bicep Template](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIEasyAuth.azuredeploy.bicep) and [Bicep Parameter File](https://github.com/Andrew-D-Wilson/Standard-Logic-App-APIM-Backend/blob/main/Bicep/API/logicAppStandardApimAPIEasyAuth.azuredeploy.bicepparam).
+      3. Deploy the Logic App APIM API Template to Azure.
 
 You will now be in a position to call your APIM API which will be using the Standard Logic App as its backend.
 
