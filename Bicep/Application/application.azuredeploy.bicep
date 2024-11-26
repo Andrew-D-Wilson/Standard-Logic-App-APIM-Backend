@@ -25,6 +25,10 @@ param location string = resourceGroup().location
 ])
 param env string = 'dev'
 
+@secure()
+@description('The client secret for the Easy Auth App Registration')
+param applicationEasyAuthClientSecret string
+
 // ** Variables **
 // ***************
 
@@ -34,6 +38,9 @@ var lgStorageAccountName = '${applicationPrefixName}${env}st'
 var applicationLogicAppName = '${applicationPrefixName}${env}logic'
 
 var isProduction = env == 'prod'
+
+@description('Role Definition Id for the Key Vault Secrets User role')
+var keyVaultSecretsUserRoleDefId = '4633458b-17de-408a-b874-0445c86b69e6'
 
 // ** Resources **
 // ***************
@@ -59,7 +66,7 @@ resource applicationKeyVaultDeploy 'Microsoft.KeyVault/vaults@2023-07-01' = {
 }
 
 @description('Deploy the App Service Plan used for Logic App Standard')
-resource lgAppServicePlanDeploy 'Microsoft.Web/serverfarms@2022-09-01' = {
+resource lgAppServicePlanDeploy 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: lgApplicationAppServicePlanName
   location: location
   tags: {
@@ -78,7 +85,7 @@ resource lgAppServicePlanDeploy 'Microsoft.Web/serverfarms@2022-09-01' = {
 }
 
 @description('Deploy the Storage Account used for Logic App Standard')
-resource lgStorageAccountDeploy 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+resource lgStorageAccountDeploy 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: lgStorageAccountName
   location: location
   tags: {
@@ -97,14 +104,31 @@ resource lgStorageAccountDeploy 'Microsoft.Storage/storageAccounts@2023-01-01' =
   }
 }
 
+@description('Deploy the Application Easy Auth App Registration Secret to Keyvault')
+resource vaultLogicAppRegSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = if (!empty(applicationEasyAuthClientSecret)) {
+  name: '${applicationLogicAppName}-EasyAuth-Secret'
+  parent: applicationKeyVaultDeploy
+  tags: {
+    ResourceType: 'LogicApp-EasyAuth-Secret'
+    ResourceName: applicationLogicAppName
+  }
+  properties: {
+    contentType: 'string'
+    value: applicationEasyAuthClientSecret
+  }
+}
+
 @description('Deploy the Application Standard Logic App')
-resource applicationLogicAppStandardDeploy 'Microsoft.Web/sites@2022-09-01' = {
+resource applicationLogicAppStandardDeploy 'Microsoft.Web/sites@2024-04-01' = {
   name: applicationLogicAppName
   location: location
   tags: {
     Application: applicationName
     Environment: env
     Version: deployment().properties.template.contentVersion
+  }
+  identity: {
+    type: 'SystemAssigned'
   }
   kind: 'functionapp,workflowapp'
   properties: {
@@ -124,7 +148,21 @@ resource applicationLogicAppStandardDeploy 'Microsoft.Web/sites@2022-09-01' = {
       AzureFunctionsJobHost__extensionBundle__id: 'Microsoft.Azure.Functions.ExtensionBundle.Workflows'
       AzureFunctionsJobHost__extensionBundle__version: '${'[1.*,'}${' 2.0.0)'}'
       APP_KIND: 'workflowApp'
+      MICROSOFT_PROVIDER_AUTHENTICATION_SECRET: empty(applicationEasyAuthClientSecret)
+        ? ''
+        : '@Microsoft.KeyVault(VaultName=${applicationKeyVaultDeploy.name};SecretName=${vaultLogicAppRegSecret.name})'
     }
+  }
+}
+
+@description('Create the RBAC for the Logic App to Read the Secret from Key Vault')
+resource applicationLogicAppRBACWithKV 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(applicationEasyAuthClientSecret)) {
+  name: guid(applicationKeyVaultDeploy.id, applicationLogicAppStandardDeploy.id, keyVaultSecretsUserRoleDefId)
+  scope: vaultLogicAppRegSecret
+  properties: {
+    principalId: applicationLogicAppStandardDeploy.identity.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', keyVaultSecretsUserRoleDefId)
+    principalType: 'ServicePrincipal'
   }
 }
 
@@ -132,4 +170,4 @@ resource applicationLogicAppStandardDeploy 'Microsoft.Web/sites@2022-09-01' = {
 // *************
 
 output keyVaultName string = applicationKeyVaultName
-output applicationLogicAppName string  = applicationLogicAppName
+output applicationLogicAppName string = applicationLogicAppName

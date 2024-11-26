@@ -23,5 +23,4 @@ param apimAPIOperations = [
     lgWorkflowTrigger: 'When_a_HTTP_request_is_received'
   }
 ]
-
-
+param logicAppEasyAuthClientId = ''

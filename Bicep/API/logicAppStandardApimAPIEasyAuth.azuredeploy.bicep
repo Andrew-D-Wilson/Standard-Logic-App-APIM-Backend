@@ -52,6 +52,9 @@ param apimAPIDisplayName string
 @description('Array of API operations')
 param apimAPIOperations apimAPIOperationArray
 
+@description('Logic App Easy Auth Client Id')
+param logicAppEasyAuthClientId string
+
 // ** Variables **
 // ***************
 
@@ -91,7 +94,7 @@ resource logicAppAPI 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
 }
 
 @description('Retrieve the existing Logic App for linking as a backend')
-resource logicApp 'Microsoft.Web/sites@2022-09-01' existing = {
+resource logicApp 'Microsoft.Web/sites@2024-04-01' existing = {
   name: logicAppName
 }
 
@@ -101,6 +104,7 @@ module logicAppEasyAuthConfig 'Modules/applicationSecurityConfig.azuredeploy.bic
   params: {
     apimInstanceName: apimInstance.name
     applicationLogicAppName: logicApp.name
+    logicAppEasyAuthClientId: logicAppEasyAuthClientId
   }
 }
 

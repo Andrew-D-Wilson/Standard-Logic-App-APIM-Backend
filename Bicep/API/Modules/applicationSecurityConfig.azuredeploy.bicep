@@ -17,6 +17,9 @@ param applicationLogicAppName string
 @description('Name of the APIM instance')
 param apimInstanceName string
 
+@description('Logic App Easy Auth Client Id')
+param logicAppEasyAuthClientId string
+
 // ** Variables **
 // ***************
 
@@ -24,7 +27,7 @@ param apimInstanceName string
 // ***************
 
 @description('Retrieve Existing Standard Logic App')
-resource applicationLogicAppStandardDeploy 'Microsoft.Web/sites@2023-01-01' existing = {
+resource applicationLogicAppStandardDeploy 'Microsoft.Web/sites@2024-04-01' existing = {
   name: applicationLogicAppName
 }
 
@@ -34,7 +37,7 @@ resource apimInstance 'Microsoft.ApiManagement/service@2022-08-01' existing = {
 }
 
 @description('Setup the Easy Auth config settings for the Standard Logic App')
-resource applicationAuthSettings 'Microsoft.Web/sites/config@2023-01-01' = {
+resource applicationAuthSettings 'Microsoft.Web/sites/config@2024-04-01' = {
   name: 'authsettingsV2'
   parent: applicationLogicAppStandardDeploy
   properties: {
@@ -56,7 +59,8 @@ resource applicationAuthSettings 'Microsoft.Web/sites/config@2023-01-01' = {
         enabled: true
         registration: {
           openIdIssuer: uri('https://sts.windows.net/', tenant().tenantId)
-          clientId: apimInstance.identity.principalId
+          clientId: logicAppEasyAuthClientId
+          clientSecretSettingName: 'MICROSOFT_PROVIDER_AUTHENTICATION_SECRET'
         }
         validation: {
           allowedAudiences: environment().authentication.audiences
